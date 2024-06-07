@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { Layout, ConfigProvider, theme } from "antd";
+import { BulbOutlined, BulbFilled, CopyrightOutlined } from "@ant-design/icons";
+import FactoryPipeCalculator from "./components/FactoryPipeCalculator";
+import "./App.css";
 
-function App() {
+const { Header, Content, Footer } = Layout;
+
+const App: React.FC = () => {
+  const [darkTheme, setDarkTheme] = useState(true);
+  const [appVersion, setAppVersion] = useState<string | undefined>("");
+
+  const toggleTheme = () => {
+    setDarkTheme(!darkTheme);
+  };
+
+  useEffect(() => {
+    setAppVersion(process.env.REACT_APP_VERSION);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <ConfigProvider
+      theme={{
+        algorithm: darkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
+      }}
+    >
+      <Layout className="layout">
+        <Header
+          className={`header ${darkTheme ? "header-dark" : "header-light"}`}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <div>Factory Pipe Calculator</div>
+          <div onClick={toggleTheme} className="theme-button">
+            {darkTheme ? <BulbFilled /> : <BulbOutlined />}
+          </div>
+        </Header>
+        <Content className="content">
+          <div className="content-inner">
+            <FactoryPipeCalculator />
+          </div>
+        </Content>
+        <Footer className="footer">
+          Factory Pipe Calculator v{appVersion} <CopyrightOutlined />
+          {new Date().getFullYear()}
+        </Footer>
+      </Layout>
+    </ConfigProvider>
   );
-}
+};
 
 export default App;

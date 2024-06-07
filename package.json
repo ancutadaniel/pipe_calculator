@@ -1,8 +1,56 @@
 {
   "name": "factory-pipe-calculator",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "main": "public/electron.js",
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  },
+  "build": {
+    "appId": "com.factory.pipe.calculator",
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "files": [
+      "build/**/*",
+      "public/electron.js",
+      "public/preload.js",
+      "package.json"
+    ],
+    "mac": {
+      "icon": "assets/icon.icns",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    },
+    "linux": {
+      "icon": "assets/icon.png",
+      "target": [
+        "AppImage",
+        "tar.gz"
+      ]
+    }
+  },
   "dependencies": {
+    "@ant-design/icons": "^5.3.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -10,17 +58,26 @@
     "@types/node": "^16.18.98",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.12.0",
+    "@typescript-eslint/parser": "^7.12.0",
+    "antd": "^5.18.0",
+    "electron-devtools-installer": "^3.2.0",
+    "eslint": "^9.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.4.5",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "concurrently": "^8.2.2",
+    "electron": "^30.1.0",
+    "electron-builder": "^25.0.0-alpha.9",
+    "electron-is-dev": "^3.0.1",
+    "eslint-config-react-app": "^7.0.1",
+    "react-app-rewired": "^2.2.1",
+    "wait-on": "^7.2.0"
   },
   "eslintConfig": {
     "extends": [
@@ -28,16 +85,13 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "scripts": {
+    "build": "react-app-rewired build",
+    "eject": "react-scripts eject",
+    "electron": "concurrently \"PORT=3001 yarn start\" \"wait-on http://localhost:3001 && electron .\"",
+    "electron-pack": "react-app-rewired build && electron-builder",
+    "start": "react-app-rewired start",
+    "test": "react-app-rewired test"
   }
+  
 }
